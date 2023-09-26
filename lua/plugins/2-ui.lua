@@ -20,8 +20,8 @@
 --       -> which-key                   [on-screen keybinding]
 
 local utils = require "base.utils"
-local windows = vim.fn.has('win32') == 1             -- true if on windows
-local android = vim.fn.isdirectory('/system') == 1   -- true if on android
+local windows = vim.fn.has "win32" == 1           -- true if on windows
+local android = vim.fn.isdirectory "/system" == 1 -- true if on android
 
 return {
 
@@ -36,7 +36,7 @@ return {
         comments = { italic = true },
         keywords = { italic = true },
       },
-    }
+    },
   },
 
   --  astrotheme [theme]
@@ -117,37 +117,40 @@ return {
       --   [[ \/_/\/_/\/__/    \/_/\/_/\/_/\/_/]],
       -- }
 
-      if android then dashboard.section.header.val = {
-        [[         __                ]],
-        [[ __  __ /\_\    ___ ___    ]],
-        [[/\ \/\ \\/\ \ /' __` __`\  ]],
-        [[\ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
-        [[ \ \___/  \ \_\ \_\ \_\ \_\]],
-        [[  \/__/    \/_/\/_/\/_/\/_/]],
-       }
-      else dashboard.section.header.val = {
-[[888b      88                                                           88]],
-[[8888b     88                                                           88]],
-[[88 `8b    88                                                           88]],
-[[88  `8b   88   ,adPPYba,   8b,dPPYba,  88,dPYba,,adPYba,   ,adPPYYba,  88]],
-[[88   `8b  88  a8"     "8a  88P'   "Y8  88P'   "88"    "8a  ""     `Y8  88]],
-[[88    `8b 88  8b       d8  88          88      88      88  ,adPPPPP88  88]],
-[[88     `8888  "8a,   ,a8"  88          88      88      88  88,    ,88  88]],
-[[88      `888   `"YbbdP"'   88          88      88      88  `"8bbdP"Y8  88]],
-                 [[                                    __                ]],
-                 [[                      ___   __  __ /\_\    ___ ___    ]],
-                 [[                    /' _ `\/\ \/\ \\/\ \ /' __` __`\  ]],
-                 [[                    /\ \/\ \ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
-                 [[                    \ \_\ \_\ \___/  \ \_\ \_\ \_\ \_\]],
-                 [[                     \/_/\/_/\/__/    \/_/\/_/\/_/\/_/]],
-      }
+      if android then
+        dashboard.section.header.val = {
+          [[         __                ]],
+          [[ __  __ /\_\    ___ ___    ]],
+          [[/\ \/\ \\/\ \ /' __` __`\  ]],
+          [[\ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
+          [[ \ \___/  \ \_\ \_\ \_\ \_\]],
+          [[  \/__/    \/_/\/_/\/_/\/_/]],
+        }
+      else
+        dashboard.section.header.val = {
+          [[888b      88                                                           88]],
+          [[8888b     88                                                           88]],
+          [[88 `8b    88                                                           88]],
+          [[88  `8b   88   ,adPPYba,   8b,dPPYba,  88,dPYba,,adPYba,   ,adPPYYba,  88]],
+          [[88   `8b  88  a8"     "8a  88P'   "Y8  88P'   "88"    "8a  ""     `Y8  88]],
+          [[88    `8b 88  8b       d8  88          88      88      88  ,adPPPPP88  88]],
+          [[88     `8888  "8a,   ,a8"  88          88      88      88  88,    ,88  88]],
+          [[88      `888   `"YbbdP"'   88          88      88      88  `"8bbdP"Y8  88]],
+          [[                                    __                ]],
+          [[                      ___   __  __ /\_\    ___ ___    ]],
+          [[                    /' _ `\/\ \/\ \\/\ \ /' __` __`\  ]],
+          [[                    /\ \/\ \ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
+          [[                    \ \_\ \_\ \___/  \ \_\ \_\ \_\ \_\]],
+          [[                     \/_/\/_/\/__/    \/_/\/_/\/_/\/_/]],
+        }
       end
 
       dashboard.section.header.opts.hl = "DashboardHeader"
       vim.cmd "highlight DashboardHeader guifg=#F7778F"
 
       -- If on windows, don't show the 'ranger' button
-      local ranger_button = dashboard.button("r", "🐍 Ranger  ", "<cmd>RnvimrToggle<CR>")
+      local ranger_button =
+          dashboard.button("r", "🐍 Ranger  ", "<cmd>RnvimrToggle<CR>")
       if windows then ranger_button = nil end
 
       -- Buttons
@@ -254,7 +257,7 @@ return {
           end
         end,
       })
-    end
+    end,
   },
 
   --  heirline [statusbar]
@@ -268,17 +271,33 @@ return {
         opts = {
           disable_winbar_cb = function(args)
             return not require("base.utils.buffer").is_valid(args.buf)
-              or status.condition.buffer_matches({
-                buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
-                filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
-              }, args.buf)
+                or status.condition.buffer_matches({
+                  buftype = {
+                    "terminal",
+                    "prompt",
+                    "nofile",
+                    "help",
+                    "quickfix",
+                  },
+                  filetype = {
+                    "NvimTree",
+                    "neo%-tree",
+                    "dashboard",
+                    "Outline",
+                    "aerial",
+                  },
+                }, args.buf)
           end,
         },
         statusline = { -- statusline
           hl = { fg = "fg", bg = "bg" },
           status.component.mode(),
           status.component.git_branch(),
-          status.component.file_info { filetype = {}, filename = false, file_modified = false },
+          status.component.file_info {
+            filetype = {},
+            filename = false,
+            file_modified = false,
+          },
           status.component.git_diff(),
           status.component.diagnostics(),
           status.component.fill(),
@@ -298,7 +317,10 @@ return {
             condition = function() return not status.condition.is_active() end,
             status.component.separated_path(),
             status.component.file_info {
-              file_icon = { hl = status.hl.file_icon "winbar", padding = { left = 0 } },
+              file_icon = {
+                hl = status.hl.file_icon "winbar",
+                padding = { left = 0 },
+              },
               file_modified = false,
               file_read_only = false,
               hl = status.hl.get_attributes("winbarnc", true),
@@ -306,37 +328,54 @@ return {
               update = "BufEnter",
             },
           },
-          status.component.breadcrumbs { hl = status.hl.get_attributes("winbar", true) },
+          status.component.breadcrumbs {
+            hl = status.hl.get_attributes("winbar", true),
+          },
         },
         tabline = { -- bufferline
-          { -- file tree padding
+          {         -- file tree padding
             condition = function(self)
               self.winid = vim.api.nvim_tabpage_list_wins(0)[1]
-              return status.condition.buffer_matches(
-                {
-                  filetype = {
-                  "aerial", "dapui_.", "dap-repl", "neo%-tree", "NvimTree", "edgy"
-                  }
+              return status.condition.buffer_matches({
+                filetype = {
+                  "aerial",
+                  "dapui_.",
+                  "dap-repl",
+                  "neo%-tree",
+                  "NvimTree",
+                  "edgy",
                 },
-                vim.api.nvim_win_get_buf(self.winid)
+              }, vim.api.nvim_win_get_buf(self.winid))
+            end,
+            provider = function(self)
+              return string.rep(
+                " ",
+                vim.api.nvim_win_get_width(self.winid) + 1
               )
             end,
-            provider = function(self) return string.rep(" ", vim.api.nvim_win_get_width(self.winid) + 1) end,
             hl = { bg = "tabline_bg" },
           },
           status.heirline.make_buflist(status.component.tabline_file_info()), -- component for each buffer tab
-          status.component.fill { hl = { bg = "tabline_bg" } }, -- fill the rest of the tabline with background color
-          { -- tab list
+          status.component.fill { hl = { bg = "tabline_bg" } },               -- fill the rest of the tabline with background color
+          {                                                                   -- tab list
             condition = function()
               -- only show tabs if there are more than one
               return #vim.api.nvim_list_tabpages() >= 2
             end,
             status.heirline.make_tablist { -- component for each tab
               provider = status.provider.tabnr(),
-              hl = function(self) return status.hl.get_attributes(status.heirline.tab_type(self, "tab"), true) end,
+              hl = function(self)
+                return status.hl.get_attributes(
+                  status.heirline.tab_type(self, "tab"),
+                  true
+                )
+              end,
             },
             { -- close button for current tab
-              provider = status.provider.close_button { kind = "TabClose", padding = { left = 1, right = 1 } },
+              provider = status.provider.close_button {
+                kind = "TabClose",
+                padding = { left = 1, right = 1 },
+              },
               hl = status.hl.get_attributes("tab_close", true),
               on_click = {
                 callback = function() require("base.utils.buffer").close_tab() end,
@@ -535,7 +574,8 @@ return {
               end
             end
           end
-          vim.t.bufs = vim.tbl_filter(require("base.utils.buffer").is_valid, vim.t.bufs)
+          vim.t.bufs =
+              vim.tbl_filter(require("base.utils.buffer").is_valid, vim.t.bufs)
           if removed then utils.event "BufsUpdated" end
           vim.cmd.redrawtabline()
         end,
@@ -575,7 +615,9 @@ return {
           ["<ESC>"] = actions.close,
           ["<C-c>"] = false,
         },
-        n = { ["q"] = actions.close },
+        n = {
+          ["q"] = actions.close,
+        },
       }
       return {
         defaults = {
@@ -678,7 +720,7 @@ return {
       )
     end,
     opts = {
-      input = { default_prompt = "➤ "},
+      input = { default_prompt = "➤ " },
       select = { backend = { "telescope", "builtin" } },
     },
   },
@@ -734,9 +776,7 @@ return {
       menu = {},
     },
     enabled = vim.g.icons_enabled,
-    config = function(_, opts)
-      require("lspkind").init(opts)
-    end,
+    config = function(_, opts) require("lspkind").init(opts) end,
   },
 
   --  nvim-scrollbar [scrollbar]

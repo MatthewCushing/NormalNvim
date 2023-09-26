@@ -346,7 +346,7 @@ return {
       -- C#
       dap.adapters.coreclr = {
         type = 'executable',
-        command = vim.fn.stdpath('data')..'/mason/bin/netcoredbg',
+        command = '/usr/local/share/netcoredbg/build/src/netcoredbg',
         args = {'--interpreter=vscode'}
       }
       dap.configurations.cs = {
@@ -355,7 +355,7 @@ return {
           name = "launch - netcoredbg",
           request = "launch",
           program = function() -- Ask the user what executable wants to debug
-              return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/bin/Program.exe', 'file')
+              return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/bin/Debug/net7.0/', 'file')
           end,
         },
       }
